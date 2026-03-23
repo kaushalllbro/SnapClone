@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SnapClone Nexus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-theme="blue-orange">
+    <div class="app-shell">
+      <aside class="sidebar glass-card">
+        <div>
+          <div class="brand-block">
+            <div class="brand-icon">N</div>
+            <div>
+              <p class="eyebrow">Snap-style social hub</p>
+              <h1>SnapClone Nexus</h1>
+            </div>
+          </div>
+
+          <div class="theme-card">
+            <p class="section-label">Theme Select</p>
+            <div class="theme-grid">
+              <button class="theme-btn active" data-theme="blue-orange">Blue / Orange</button>
+              <button class="theme-btn" data-theme="violet-lime">Violet / Lime</button>
+              <button class="theme-btn" data-theme="sunset-coral">Sunset / Coral</button>
+              <button class="theme-btn" data-theme="midnight-aqua">Midnight / Aqua</button>
+            </div>
+          </div>
+
+          <nav class="nav-links">
+            <button class="nav-btn active" data-target="camera-panel">Camera</button>
+            <button class="nav-btn" data-target="stories-panel">Stories</button>
+            <button class="nav-btn" data-target="chat-panel">Chats</button>
+            <button class="nav-btn" data-target="discover-panel">Discover</button>
+            <button class="nav-btn" data-target="ai-panel">Nexus AI</button>
+            <button class="nav-btn" data-target="profile-panel">Profile</button>
+          </nav>
+        </div>
+
+        <div class="system-card">
+          <p class="section-label">Live status</p>
+          <div class="status-pill"><span></span> Firebase ready</div>
+          <div class="status-pill"><span></span> Notification prompts enabled</div>
+          <div class="status-pill"><span></span> Nexus AI prepared</div>
+        </div>
+      </aside>
+
+      <main class="content-grid">
+        <section class="topbar glass-card">
+          <div>
+            <p class="section-label">Everything except map, spotlight, filters</p>
+            <h2>Your gradient Snapchat-inspired shell</h2>
+          </div>
+          <div class="topbar-actions">
+            <button id="notifyBtn" class="primary-btn">Enable Notifications</button>
+            <button id="demoPushBtn" class="secondary-btn">Test Notification</button>
+          </div>
+        </section>
+
+        <section id="camera-panel" class="panel glass-card active-panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">Snap capture</p>
+              <h3>Create a snap</h3>
+            </div>
+            <span class="badge">Camera + Send + Memories</span>
+          </div>
+
+          <div class="camera-layout">
+            <div class="camera-preview">
+              <video id="cameraFeed" autoplay playsinline muted></video>
+              <div class="camera-overlay">
+                <span>Live preview</span>
+                <strong id="captureMode">Photo mode</strong>
+              </div>
+            </div>
+
+            <div class="composer-card">
+              <label class="field-block">
+                <span>Caption</span>
+                <textarea id="snapCaption" placeholder="What is happening right now?"></textarea>
+              </label>
+
+              <label class="field-block">
+                <span>Recipient</span>
+                <select id="recipientSelect">
+                  <option>Alex Morgan</option>
+                  <option>Jamie Chen</option>
+                  <option>Taylor Brooks</option>
+                  <option>My Story</option>
+                  <option>Private Story</option>
+                </select>
+              </label>
+
+              <div class="composer-actions">
+                <button id="toggleModeBtn" class="secondary-btn">Switch to Video</button>
+                <button id="captureBtn" class="primary-btn">Capture Snap</button>
+                <button id="sendSnapBtn" class="accent-btn">Send Snap</button>
+              </div>
+
+              <div class="mini-stats">
+                <div>
+                  <strong id="snapCount">0</strong>
+                  <span>Snaps today</span>
+                </div>
+                <div>
+                  <strong id="storyCount">0</strong>
+                  <span>Stories posted</span>
+                </div>
+                <div>
+                  <strong>24h</strong>
+                  <span>Story lifetime</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="stories-panel" class="panel glass-card">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">Stories</p>
+              <h3>Friend, private, and campus style stories</h3>
+            </div>
+            <button id="addStoryBtn" class="primary-btn">Add to Story</button>
+          </div>
+          <div id="storiesRail" class="stories-rail"></div>
+          <div id="storyViewer" class="story-viewer"></div>
+        </section>
+
+        <section id="chat-panel" class="panel glass-card">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">Chats & calls</p>
+              <h3>Snaps, messages, voice, and video call shortcuts</h3>
+            </div>
+            <span class="badge">Chat streaks + quick reactions</span>
+          </div>
+          <div class="chat-layout">
+            <div id="chatList" class="chat-list"></div>
+            <div class="chat-thread glass-subcard">
+              <div class="thread-header">
+                <div>
+                  <p id="threadName">Alex Morgan</p>
+                  <span id="threadMeta">🔥 187 streak • Active now</span>
+                </div>
+                <div class="thread-actions">
+                  <button class="icon-btn">📞</button>
+                  <button class="icon-btn">🎥</button>
+                  <button class="icon-btn">😊</button>
+                </div>
+              </div>
+              <div id="messagesContainer" class="messages"></div>
+              <div class="message-composer">
+                <input id="chatInput" type="text" placeholder="Send a message or plan a snap..." />
+                <button id="sendMessageBtn" class="primary-btn">Send</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="discover-panel" class="panel glass-card">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">Discover</p>
+              <h3>Editorial tiles, creator updates, and subscriptions</h3>
+            </div>
+            <span class="badge">No spotlight included</span>
+          </div>
+          <div id="discoverGrid" class="discover-grid"></div>
+        </section>
+
+        <section id="ai-panel" class="panel glass-card">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">Nexus AI</p>
+              <h3>Your in-app AI friend and assistant</h3>
+            </div>
+            <span class="badge">White-labeled assistant UI</span>
+          </div>
+          <div class="ai-layout">
+            <div class="glass-subcard ai-summary">
+              <h4>What Nexus AI can do</h4>
+              <ul>
+                <li>Draft replies for chats.</li>
+                <li>Create story captions and moodboards.</li>
+                <li>Suggest streak-saving ideas.</li>
+                <li>Answer questions inside the app shell.</li>
+              </ul>
+            </div>
+            <div class="glass-subcard ai-chatbox">
+              <div id="aiMessages" class="messages ai-messages"></div>
+              <div class="message-composer">
+                <input id="aiInput" type="text" placeholder="Ask Nexus AI anything..." />
+                <button id="sendAiBtn" class="accent-btn">Ask Nexus</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="profile-panel" class="panel glass-card">
+          <div class="panel-header">
+            <div>
+              <p class="section-label">Profile & memories</p>
+              <h3>Identity, stats, saved snaps, and app settings</h3>
+            </div>
+            <span class="badge">Snap Map omitted</span>
+          </div>
+          <div class="profile-grid">
+            <div class="glass-subcard profile-card">
+              <div class="avatar">N</div>
+              <h4>Nexus User</h4>
+              <p>@nexus.snap</p>
+              <div class="profile-stats">
+                <div><strong>278,400</strong><span>Snap Score</span></div>
+                <div><strong>12</strong><span>Best Friends</span></div>
+                <div><strong>82</strong><span>Memories</span></div>
+              </div>
+            </div>
+            <div class="glass-subcard settings-card">
+              <h4>Feature checklist</h4>
+              <div class="settings-list">
+                <label><input type="checkbox" checked /> Stories</label>
+                <label><input type="checkbox" checked /> Sending snaps</label>
+                <label><input type="checkbox" checked /> Chats</label>
+                <label><input type="checkbox" checked /> Voice/video shortcuts</label>
+                <label><input type="checkbox" checked /> Discover</label>
+                <label><input type="checkbox" checked /> Memories</label>
+                <label><input type="checkbox" checked /> Nexus AI</label>
+                <label><input type="checkbox" checked /> Firebase notifications</label>
+              </div>
+              <p class="fine-print">
+                Excluded by request: Snapchat Filters, Map, Spotlight.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <template id="storyCardTemplate">
+      <article class="story-card">
+        <div class="story-avatar"></div>
+        <div>
+          <h4></h4>
+          <p></p>
+        </div>
+      </article>
+    </template>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
